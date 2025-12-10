@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		260636E82EE9D04200B110CE /* SwiftUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 260636E72EE9D04200B110CE /* SwiftUtils */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		260636D82EE9CFE400B110CE /* bili-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bili-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				260636E82EE9D04200B110CE /* SwiftUtils in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "bili-mac";
 			packageProductDependencies = (
+				260636E72EE9D04200B110CE /* SwiftUtils */,
 			);
 			productName = "bili-mac";
 			productReference = 260636D82EE9CFE400B110CE /* bili-mac.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 260636CF2EE9CFE400B110CE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				260636E62EE9D04200B110CE /* XCRemoteSwiftPackageReference "SwiftUtils" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 260636D92EE9CFE400B110CE /* Products */;
 			projectDirPath = "";
@@ -259,12 +268,13 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "BB Mac";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.zzhhoo.bili-mac";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -291,12 +301,13 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "BB Mac";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "me.zzhhoo.bili-mac";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -331,6 +342,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		260636E62EE9D04200B110CE /* XCRemoteSwiftPackageReference "SwiftUtils" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zhihaofans/SwiftUtils";
+			requirement = {
+				kind = exactVersion;
+				version = "0.0.12-c";
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		260636E72EE9D04200B110CE /* SwiftUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 260636E62EE9D04200B110CE /* XCRemoteSwiftPackageReference "SwiftUtils" */;
+			productName = SwiftUtils;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 260636D02EE9CFE400B110CE /* Project object */;
 }
