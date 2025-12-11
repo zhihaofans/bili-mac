@@ -19,13 +19,13 @@ struct ContentView: View {
                     .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗
             case .featured:
                 Text("Hello, 精选!")
-
             case .dynamic:
                 Text("Hello, 动态!")
-
             case .mine:
                 Text("Hello, mine!")
-
+            case .setting:
+//                Text("Hello, 设置!")
+                SettingView()
             case nil:
                 Text("Hello, nil!")
             }
