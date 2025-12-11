@@ -8,17 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedSidebar: SidebarItem? = .home
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
+        NavigationSplitView {
+            SidebarView(selected: $selectedSidebar)
+        } detail: {
+            switch selectedSidebar {
+            case .home:
+                HomeView()
+                    .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗
+            case .featured:
+                Text("Hello, 精选!")
 
-#Preview {
-    ContentView()
+            case .dynamic:
+                Text("Hello, 动态!")
+
+            case .mine:
+                Text("Hello, mine!")
+
+            case nil:
+                Text("Hello, nil!")
+            }
+        }
+        .navigationSplitViewStyle(.prominentDetail)
+    }
 }
