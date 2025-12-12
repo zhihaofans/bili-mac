@@ -38,7 +38,7 @@ struct TopTabBar: View {
             Spacer()
         }
         .padding(.horizontal, 20)
-        //.background(.thickMaterial) // 自动随系统变化
+        .background(.thickMaterial) // 自动随系统变化
     }
 }
 
@@ -47,47 +47,4 @@ enum TopTab: String, CaseIterable {
     case hot = "热门"
     case follow = "追番"
     case movie = "影视"
-}
-
-struct VideoCard: View {
-    let video: VideoItem
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            ZStack(alignment: .bottomTrailing) {
-                AsyncImage(url: URL(string: video.cover)) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    Color.gray.opacity(0.2)
-                }
-                .frame(height: 140)
-                .clipped()
-                .cornerRadius(10)
-
-                Text(video.duration)
-                    .font(.caption2)
-                    .padding(4)
-                    .background(.thinMaterial)
-                    .cornerRadius(4)
-                    .padding(6)
-            }
-
-            Text(video.title)
-                .font(.subheadline)
-                .foregroundColor(.primary)
-                .lineLimit(2)
-
-            HStack {
-                Label(video.play, systemImage: "play.fill")
-                Label(video.danmaku, systemImage: "text.bubble")
-            }
-            .font(.caption2)
-            .foregroundColor(.secondary)
-        }
-        .padding(8)
-        .background(.regularMaterial) // 自动亮/暗
-        .cornerRadius(12)
-    }
 }

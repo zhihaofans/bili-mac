@@ -16,7 +16,8 @@ enum MockData {
             play: "90.6万",
             danmaku: "53",
             duration: "01:15",
-            author: "Biu_某某",
+            author_name: "Biu_某某",
+            author_face: cover,
             date: "12-8"
         ),
         VideoItem(
@@ -25,7 +26,8 @@ enum MockData {
             play: "53.4万",
             danmaku: "1676",
             duration: "07:37",
-            author: "文史拾遗",
+            author_name: "文史拾遗",
+            author_face: cover,
             date: "12-9"
         ),
         VideoItem(
@@ -34,7 +36,8 @@ enum MockData {
             play: "17.8万",
             danmaku: "109",
             duration: "01:39",
-            author: "某某实验室",
+            author_name: "某某实验室",
+            author_face: cover,
             date: "12-7"
         ),
         VideoItem(
@@ -43,7 +46,8 @@ enum MockData {
             play: "209.3万",
             danmaku: "2047",
             duration: "09:15",
-            author: "极速拍档-NANA",
+            author_name: "极速拍档-NANA",
+            author_face: cover,
             date: "12-4"
         ),
         VideoItem(
@@ -52,7 +56,8 @@ enum MockData {
             play: "65.7万",
             danmaku: "1804",
             duration: "11:12",
-            author: "太阳星sunstar",
+            author_name: "太阳星sunstar",
+            author_face: cover,
             date: "12-5"
         ),
         VideoItem(
@@ -61,7 +66,8 @@ enum MockData {
             play: "20.1万",
             danmaku: "910",
             duration: "04:46",
-            author: "一只财茶茶呀",
+            author_name: "一只财茶茶呀",
+            author_face: cover,
             date: "昨天"
         ),
         VideoItem(
@@ -70,7 +76,8 @@ enum MockData {
             play: "359.6万",
             danmaku: "3157",
             duration: "16:52",
-            author: "三代鹿人",
+            author_name: "三代鹿人",
+            author_face: cover,
             date: "12-6"
         ),
         VideoItem(
@@ -79,7 +86,8 @@ enum MockData {
             play: "23.5万",
             danmaku: "109",
             duration: "03:07",
-            author: "迪士尼果然给",
+            author_name: "迪士尼果然给",
+            author_face: cover,
             date: "12-5"
         )
     ]
