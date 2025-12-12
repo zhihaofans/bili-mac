@@ -13,7 +13,7 @@ struct HomeView: View {
             TopTabBar()
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 16), count: 3), spacing: 16) {
-                    ForEach(MockData.videos) { video in
+                    ForEach(Array(repeating: MockData.videos, count: 3).flatMap { $0 }) { video in
                         VideoCard(video: video)
                     }
                 }
