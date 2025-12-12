@@ -8,16 +8,40 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var videos: [VideoItem] = []
+
     var body: some View {
         VStack(spacing: 0) {
             TopTabBar()
             ScrollView {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 16), count: 3), spacing: 16) {
-                    ForEach(Array(repeating: MockData.videos, count: 3).flatMap { $0 }) { video in
-                        VideoCard(video: video)
+                if videos.isEmpty {
+                    VStack {
+                        ProgressView("加载中…")
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .padding(.top, 50)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                } else {
+                    GeometryReader { geo in
+                        let width = geo.size.width
+                        let itemWidth: CGFloat = 260
+                        let spacing: CGFloat = 16
+                        let columns = max(Int(width / (itemWidth + spacing)), 1)
+
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: spacing), count: columns),
+                                  spacing: spacing)
+                        {
+                            ForEach(videos) { video in
+                                VideoCard(video: video)
+                            }
+                        }
+                        .padding(20)
                     }
                 }
-                .padding(20)
+            }
+        }.onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                videos = Array(repeating: MockData.videos, count: 3).flatMap { $0 }
             }
         }
     }
