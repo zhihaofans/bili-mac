@@ -14,8 +14,6 @@ struct SettingView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                // MARK: - 登录区域
-
                 sectionHeader("登录哔哩哔哩你可以")
 
                 HStack(spacing: 20) {
@@ -27,8 +25,6 @@ struct SettingView: View {
 
                 Button("立即登录") {}
                     .buttonStyle(PinkRoundedButton())
-
-                // MARK: - 登录数据设置
 
                 sectionHeader("登录数据")
 
@@ -61,6 +57,7 @@ struct SettingView: View {
             }
             .padding(30)
         }
+        .navigationTitle("设置")
 //        .background(.regularMaterial)
     }
 
