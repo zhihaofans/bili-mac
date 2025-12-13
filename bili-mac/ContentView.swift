@@ -16,9 +16,7 @@ struct ContentView: View {
             switch selectedSidebar {
             case .home:
                 HomeView()
-                    .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗
-            case .featured:
-                Text("Hello, 精选!")
+                    .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗色模式
             case .dynamic:
                 Text("Hello, 动态!")
             case .mine:

@@ -9,7 +9,6 @@ import SwiftUI
 
 enum SidebarItem: String, CaseIterable, Hashable, Identifiable {
     case home = "首页"
-    case featured = "热门精选"
     case dynamic = "动态"
     case mine = "我的"
     case setting = "设置"
@@ -19,7 +18,6 @@ enum SidebarItem: String, CaseIterable, Hashable, Identifiable {
     var icon: String {
         switch self {
         case .home: return "house"
-        case .featured: return "flame.fill"
         case .dynamic: return "bolt"
         case .mine: return "person"
         case .setting: return "gear"
