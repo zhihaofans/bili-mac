@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUtils
 
 struct VideoCard: View {
     let video: VideoItem
@@ -13,7 +14,7 @@ struct VideoCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             ZStack(alignment: .bottomTrailing) {
-                AsyncImage(url: URL(string: video.cover)) { image in
+                AsyncImage(url: URL(string: video.cover.replace(of: "http://", with: "https://"))) { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -42,7 +43,7 @@ struct VideoCard: View {
                     .padding(6)
             }
             HStack {
-                AsyncImage(url: URL(string: video.author_face)) { image in
+                AsyncImage(url: URL(string: video.author_face.replace(of: "http://", with: "https://"))) { image in
                     image
                         .resizable()
                         .scaledToFill()

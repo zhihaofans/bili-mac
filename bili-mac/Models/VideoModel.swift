@@ -26,10 +26,11 @@ struct BiliVideoInfoData: Codable {
     let duration: Int // 稿件总时长(所有分P)
     let owner: BiliVideoInfoOwner
     let tname: String? // 分区类型
-    let dynamic: String // 视频同步发布的的动态的文字内容
+    let dynamic: String // 视频同步发布的的动态的文b字内容
     let no_cache: Bool? // 是否不允许缓存?
     let pages: [BiliVideoInfoPagesItem]? // 视频分P列表
     let short_link_v2: String? // 短链接
+    let stat: BiliVideoStat //视频状态数
 }
 
 struct BiliVideoInfoOwner: Codable {
@@ -44,4 +45,36 @@ struct BiliVideoInfoPagesItem: Codable {
     let from: String // 视频来源，    vupload：普通上传（B站）、hunan：芒果TV、qq：腾讯
     let part: String // 分P标题
     let duration: Int // 分P持续时间
+}
+
+struct BiliVideoStat: Codable {
+    let aid: Int
+    let view: Int
+    let danmaku: Int
+    let reply: Int
+    let favorite: Int
+    let coin: Int
+    let share: Int
+    let nowRank: Int
+    let hisRank: Int
+    let like: Int
+    let dislike: Int
+    let evaluation: String?
+    let vt: Int
+
+    enum CodingKeys: String, CodingKey {
+        case aid
+        case view
+        case danmaku
+        case reply
+        case favorite
+        case coin
+        case share
+        case nowRank = "now_rank"
+        case hisRank = "his_rank"
+        case like
+        case dislike
+        case evaluation
+        case vt
+    }
 }

@@ -5,7 +5,6 @@
 //  Created by zzh on 2025/12/12.
 //
 
-
 import Foundation
 
 // Rank
@@ -16,7 +15,8 @@ struct BiliRankResult: Codable {
 }
 
 struct BiliRankData: Codable {
-    let note: String
+    let note: String?
+    let no_more: Bool
     let list: [BiliVideoInfoData]
 }
 
