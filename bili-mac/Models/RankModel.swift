@@ -16,7 +16,7 @@ struct BiliRankResult: Codable {
 
 struct BiliRankData: Codable {
     let note: String?
-    let no_more: Bool
+    let no_more: Bool?
     let list: [BiliVideoInfoData]
 }
 

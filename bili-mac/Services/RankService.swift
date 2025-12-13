@@ -11,12 +11,42 @@ import SwiftUtils
 class RankService {
     private let http = HttpUtil()
     private let headers: HTTPHeaders = [
-        // "Cookie": BiliLoginService().getCookiesString(),
+        "Cookie": AccountService().cookie,
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.1 Safari/605.1.15",
         "Content-Type": "application/x-www-form-urlencoded",
         "Referer": "https://www.bilibili.com/",
     ]
     init() {
         http.setHeader(headers)
+    }
+
+    func getTopRanking(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
+        let url = "https://api.bilibili.com/x/web-interface/ranking/v2"
+        http.get(url) { result in
+            if result.isEmpty {
+                fail("result.isEmpty")
+            } else {
+                do {
+                    print(result)
+                    let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
+                    print("getTopRanking")
+                    debugPrint(data.code)
+                    if data.code == 0 {
+                        callback(data)
+                    } else {
+                        fail("Code \(data.code): \(data.message)")
+                    }
+                } catch {
+                    print(error)
+                    print("getTopRanking.catch.error")
+                    fail("getTopRanking:\(error)")
+                }
+            }
+        } fail: { error in
+            print(error)
+            print("getTopRanking.http.error")
+            fail("getTopRanking:\(error)")
+        }
     }
 
     func getHomePage(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
@@ -28,7 +58,7 @@ class RankService {
                 do {
                     print(result)
                     let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
-                    print("getRankList")
+                    print("getHomePage")
                     debugPrint(data.code)
                     if data.code == 0 {
                         callback(data)
@@ -37,14 +67,14 @@ class RankService {
                     }
                 } catch {
                     print(error)
-                    print("getLaterToWatch.catch.error")
-                    fail("getLaterToWatch:\(error)")
+                    print("getHomePage.catch.error")
+                    fail("getHomePage:\(error)")
                 }
             }
         } fail: { error in
             print(error)
-            print("getLaterToWatch.http.error")
-            fail("getLaterToWatch:\(error)")
+            print("getHomePage.http.error")
+            fail("getHomePage:\(error)")
         }
     }
 }
