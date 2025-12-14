@@ -5,6 +5,7 @@
 //  Created by zzh on 2025/12/11.
 //
 
+import CoreImage.CIFilterBuiltins
 import SwiftUI
 import SwiftUtils
 
@@ -12,7 +13,6 @@ struct HomeView: View {
     @State private var selected: HomeTopTab = .recommend
     @State private var videos: [VideoItem] = []
     @State private var errorStr: String = "欢迎使用 BBMac - 加载中..."
-
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 30) {
@@ -50,6 +50,21 @@ struct HomeView: View {
                     ) {
                         ForEach(videos) { video in
                             VideoCard(video: video)
+                                .contextMenu {
+                                    Button("复制链接") {
+                                        // copyToPasteboard(video.url)
+                                        ClipboardUtil().setString(video.url)
+                                    }
+
+                                    Button("复制标题") {
+                                        // copyToPasteboard(video.title)
+                                        ClipboardUtil().setString(video.title)
+                                    }
+
+                                    Divider()
+
+                                    Text(video.bvid)
+                                }
                         }
                     }
                     .padding(20)
@@ -97,7 +112,9 @@ struct HomeView: View {
                     duration: formatDuration(item.duration),
                     author_name: item.owner.name,
                     author_face: item.owner.face,
-                    date: item.pubdate.toString
+                    date: item.pubdate.toString,
+                    url: item.short_link_v2 ?? "https://www.bilibili.com/video/${item.bvid}",
+                    bvid: item.bvid
                 )
             }
 
