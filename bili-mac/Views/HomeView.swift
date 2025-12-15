@@ -128,20 +128,18 @@ struct HomeView: View {
             loadCache()
         }
 
-        // 🔥 Tab → 接口分发（关键修改点）
         switch tab {
         case .recommend:
-            rankService.getHomePage(callback: success, fail: failure)
+            rankService.getNowHot(callback: success, fail: failure)
 
         case .topRanking:
             rankService.getTopRanking(callback: success, fail: failure)
 
-        case .follow:
-            errorStr = "追番暂未实现"
-            loadCache()
+        case .noobPrecious:
+            rankService.getNoobPrecious(callback: success, fail: failure)
 
-        case .movie:
-            errorStr = "影视暂未实现"
+        case .week:
+            errorStr = "352风控暂停该功能"
             loadCache()
         }
     }
@@ -150,6 +148,6 @@ struct HomeView: View {
 enum HomeTopTab: String, CaseIterable {
     case recommend = "推荐"
     case topRanking = "排行榜"
-    case follow = "追番"
-    case movie = "影视"
+    case noobPrecious = "入站必刷"
+    case week = "每周必看"
 }

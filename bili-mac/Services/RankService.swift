@@ -20,6 +20,7 @@ class RankService {
         http.setHeader(headers)
     }
 
+    // 排行榜
     func getTopRanking(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
         let url = "https://api.bilibili.com/x/web-interface/ranking/v2"
         http.get(url) { result in
@@ -49,8 +50,68 @@ class RankService {
         }
     }
 
-    func getHomePage(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
+    // 当前热门视频列表
+    func getNowHot(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
         let url = "https://api.bilibili.com/x/web-interface/popular?ps=50"
+        http.get(url) { result in
+            if result.isEmpty {
+                fail("result.isEmpty")
+            } else {
+                do {
+                    print(result)
+                    let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
+                    print("getHomePage")
+                    debugPrint(data.code)
+                    if data.code == 0 {
+                        callback(data)
+                    } else {
+                        fail("Code \(data.code): \(data.message)")
+                    }
+                } catch {
+                    print(error)
+                    print("getHomePage.catch.error")
+                    fail("getHomePage:\(error)")
+                }
+            }
+        } fail: { error in
+            print(error)
+            print("getHomePage.http.error")
+            fail("getHomePage:\(error)")
+        }
+    }
+
+    // 入站必刷视频
+    func getNoobPrecious(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
+        let url = "https://api.bilibili.com/x/web-interface/popular/precious"
+        http.get(url) { result in
+            if result.isEmpty {
+                fail("result.isEmpty")
+            } else {
+                do {
+                    print(result)
+                    let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
+                    print("getHomePage")
+                    debugPrint(data.code)
+                    if data.code == 0 {
+                        callback(data)
+                    } else {
+                        fail("Code \(data.code): \(data.message)")
+                    }
+                } catch {
+                    print(error)
+                    print("getHomePage.catch.error")
+                    fail("getHomePage:\(error)")
+                }
+            }
+        } fail: { error in
+            print(error)
+            print("getHomePage.http.error")
+            fail("getHomePage:\(error)")
+        }
+    }
+    // 入站必刷视频
+    func getWeekVideo(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
+        let url = "https://api.bilibili.com/x/web-interface/popular/series/one?number=1"
         http.get(url) { result in
             if result.isEmpty {
                 fail("result.isEmpty")
