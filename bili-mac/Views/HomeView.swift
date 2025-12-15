@@ -51,19 +51,21 @@ struct HomeView: View {
                         ForEach(videos) { video in
                             VideoCard(video: video)
                                 .contextMenu {
+                                    Text(video.bvid)
+
                                     Button("复制链接") {
-                                        // copyToPasteboard(video.url)
                                         ClipboardUtil().setString(video.url)
                                     }
-
                                     Button("复制标题") {
-                                        // copyToPasteboard(video.title)
                                         ClipboardUtil().setString(video.title)
                                     }
-
                                     Divider()
-
-                                    Text(video.bvid)
+                                    Button("添加到稍后再看") {
+                                        // TODO: 添加稍后再看功能
+                                    }
+                                    Button("打开UP空间") {
+                                        // TODO: 打开UP空间
+                                    }
                                 }
                         }
                     }

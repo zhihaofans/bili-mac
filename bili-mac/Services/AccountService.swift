@@ -15,7 +15,7 @@ class AccountService {
     }
 
     var cookie: String {
-        get { UserDefaultUtil().getString(forKey: SettingsKeys.auth_cookie) ?? "" }
+        get { UserDefaultUtil().getString(SettingsKeys.auth_cookie) ?? "" }
         set { UserDefaultUtil().setString(key: SettingsKeys.auth_cookie, value: newValue) }
     }
 

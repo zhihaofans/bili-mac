@@ -17,14 +17,13 @@ struct ContentView: View {
             case .home:
                 HomeView()
                     .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗色模式
-            case .dynamic:
-                Text("Hello, 动态!")
-            case .mine:
-                Text("Hello, mine!")
+//            case .dynamic:
+//                Text("Hello, 动态!")
+//            case .mine:
+//                Text("Hello, mine!")
             case .setting:
-//                Text("Hello, 设置!")
                 SettingView()
-            case nil:
+            default:
                 Text("Hello, nil!")
             }
         }
