@@ -6,16 +6,17 @@
 //
 
 import Foundation
+import SwiftUtils
 
 class AccountService {
     var accesskey: String {
-        get { UserDefaults.standard.string(forKey: SettingsKeys.auth_accesskey) ?? "" }
-        set { UserDefaults.standard.set(newValue, forKey: SettingsKeys.auth_accesskey) }
+        get { UserDefaultUtil().getString(SettingsKeys.auth_accesskey) ?? "" }
+        set { UserDefaultUtil().setString(key: SettingsKeys.auth_accesskey, value: newValue) }
     }
 
     var cookie: String {
-        get { UserDefaults.standard.string(forKey: SettingsKeys.auth_cookie) ?? "" }
-        set { UserDefaults.standard.set(newValue, forKey: SettingsKeys.auth_cookie) }
+        get { UserDefaultUtil().getString(forKey: SettingsKeys.auth_cookie) ?? "" }
+        set { UserDefaultUtil().setString(key: SettingsKeys.auth_cookie, value: newValue) }
     }
 
     func isLogin(callback: @escaping (Bool) -> Void) {
