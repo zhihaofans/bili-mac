@@ -19,8 +19,8 @@ struct ContentView: View {
                     .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗色模式
 //            case .dynamic:
 //                Text("Hello, 动态!")
-//            case .mine:
-//                Text("Hello, mine!")
+            case .mine:
+                UserView()
             case .setting:
                 SettingView()
             default:

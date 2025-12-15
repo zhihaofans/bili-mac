@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import SwiftUtils
 
 struct UserView: View {
-    @State private var selected: HomeTopTab = .recommend
+    @State private var selected: UserTopTab = .later2watch
     @State private var videos: [VideoItem] = []
     @State private var errorStr: String = "欢迎使用 BBMac - 加载中..."
     var body: some View {
         Text("这里加个人资料")
         VStack(spacing: 0) {
             HStack(spacing: 30) {
-                ForEach(HomeTopTab.allCases, id: \.self) { tab in
+                ForEach(UserTopTab.allCases, id: \.self) { tab in
                     Text(tab.rawValue)
                         .foregroundColor(selected == tab ? .primary : .secondary)
                         .font(.system(size: 15, weight: .medium))
@@ -58,19 +59,72 @@ struct UserView: View {
                 }
             }
         }.onAppear {
-//            loadVideos(for: selected)
+            loadVideos(for: selected)
         }.onChange(of: selected) { _, newTab in
             errorStr = "加载中..."
             videos.removeAll()
-//            loadVideos(for: newTab)
+            loadVideos(for: newTab)
         }
-        .navigationTitle("个人 - BBMac")
+        .navigationTitle("我的 - BBMac")
     }
-    
+
     private func loadCache() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             videos = Array(repeating: MockData.videos, count: 3).flatMap { $0 }
 //            errorStr = "已显示缓存"
         }
     }
+
+    private func loadVideos(for tab: UserTopTab) {
+        let rankService = RankService()
+
+        let success: (BiliRankResult) -> Void = { result in
+            if result.code != 0 {
+                errorStr = "code(\(result.code)):\(result.message)"
+                loadCache()
+                return
+            }
+
+            guard let list = result.data?.list, !list.isEmpty else {
+                errorStr = "空白热门榜"
+                loadCache()
+                return
+            }
+
+            videos = list.map { item in
+                VideoItem(
+                    cover: item.pic,
+                    title: item.title,
+                    play: NumberUtil().formatPlayCount(item.stat.view),
+                    danmaku: NumberUtil().formatPlayCount(item.stat.danmaku),
+                    duration: NumberUtil().formatDuration(item.duration),
+                    author_name: item.owner.name,
+                    author_face: item.owner.face,
+                    date: item.pubdate.toString,
+                    url: item.short_link_v2 ?? "https://www.bilibili.com/video/${item.bvid}",
+                    bvid: item.bvid
+                )
+            }
+
+            errorStr = ""
+        }
+
+        let failure: (String) -> Void = { err in
+            errorStr = err
+            loadCache()
+        }
+
+        // 🔥 Tab → 接口分发（关键修改点）
+        switch tab {
+        default:
+            errorStr = "暂未实现"
+            loadCache()
+        }
+    }
+}
+
+enum UserTopTab: String, CaseIterable {
+    case later2watch = "稍后再看"
+    case history = "历史"
+    case favorite = "收藏夹"
 }
