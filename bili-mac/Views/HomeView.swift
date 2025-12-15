@@ -49,24 +49,26 @@ struct HomeView: View {
                         spacing: 16
                     ) {
                         ForEach(videos) { video in
-                            VideoCard(video: video)
-                                .contextMenu {
-                                    Text(video.bvid)
+                            NavigationLink(value: HomeRoute.video(bvid: video.bvid)) {
+                                VideoCard(video: video)
+                                    .contextMenu {
+                                        Text(video.bvid)
 
-                                    Button("复制链接") {
-                                        ClipboardUtil().setString(video.url)
+                                        Button("复制链接") {
+                                            ClipboardUtil().setString(video.url)
+                                        }
+                                        Button("复制标题") {
+                                            ClipboardUtil().setString(video.title)
+                                        }
+                                        Divider()
+                                        Button("添加到稍后再看") {
+                                            // TODO: 添加稍后再看功能
+                                        }
+                                        Button("打开UP空间") {
+                                            // TODO: 打开UP空间
+                                        }
                                     }
-                                    Button("复制标题") {
-                                        ClipboardUtil().setString(video.title)
-                                    }
-                                    Divider()
-                                    Button("添加到稍后再看") {
-                                        // TODO: 添加稍后再看功能
-                                    }
-                                    Button("打开UP空间") {
-                                        // TODO: 打开UP空间
-                                    }
-                                }
+                            }
                         }
                     }
                     .padding(20)
@@ -78,6 +80,12 @@ struct HomeView: View {
             errorStr = "加载中..."
             videos.removeAll()
             loadVideos(for: newTab)
+        }
+        .navigationDestination(for: HomeRoute.self) { route in
+            switch route {
+            case .video(let bvid):
+                VideoDetailView(bvid: bvid)
+            }
         }
         .navigationTitle("首页 - BBMac")
     }
@@ -145,9 +153,13 @@ struct HomeView: View {
     }
 }
 
-enum HomeTopTab: String, CaseIterable {
+private enum HomeTopTab: String, CaseIterable {
     case recommend = "推荐"
     case topRanking = "排行榜"
     case noobPrecious = "入站必刷"
     case week = "每周必看"
+}
+
+enum HomeRoute: Hashable {
+    case video(bvid: String)
 }

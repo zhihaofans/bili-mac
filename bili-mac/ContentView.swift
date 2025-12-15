@@ -13,18 +13,20 @@ struct ContentView: View {
         NavigationSplitView {
             SidebarView(selected: $selectedSidebar)
         } detail: {
-            switch selectedSidebar {
-            case .home:
-                HomeView()
-                    .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗色模式
+            NavigationStack {
+                switch selectedSidebar {
+                case .home:
+                    HomeView()
+                        .background(Color(NSColor.windowBackgroundColor)) // 自动适配亮/暗色模式
 //            case .dynamic:
 //                Text("Hello, 动态!")
-            case .mine:
-                UserView()
-            case .setting:
-                SettingView()
-            default:
-                Text("Hello, nil!")
+                case .mine:
+                    UserView()
+                case .setting:
+                    SettingView()
+                default:
+                    Text("Hello, nil!")
+                }
             }
         }
         .navigationSplitViewStyle(.prominentDetail)
