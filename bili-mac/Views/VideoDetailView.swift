@@ -157,7 +157,7 @@ struct VideoDetailView: View {
                 Divider()
 
                 HStack(spacing: 12) {
-                    Button("播放") {}
+                    Button("稍后再看") {}
                     Button("收藏") {}
                     Button("投币") {}
                     Button("分享") {}

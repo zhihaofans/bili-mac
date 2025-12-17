@@ -17,7 +17,7 @@ struct VideoItem: Identifiable {
     let duration: String // 视频时长
     let author_name: String // UP 主
     let author_face: String // UP 主头像
-    let date: String // 发布时间（可选）
+    let date: String // 发布时间
     let url: String
     let bvid: String
 }

@@ -42,6 +42,10 @@ struct VideoCard: View {
                     .cornerRadius(4)
                     .padding(6)
             }
+            Text(video.title)
+                .font(.subheadline)
+                .foregroundColor(.primary)
+                .lineLimit(2)
             HStack {
                 AsyncImage(url: URL(string: video.author_face.replace(of: "http://", with: "https://"))) { image in
                     image
@@ -52,15 +56,11 @@ struct VideoCard: View {
                 }
                 .frame(width: 20, height: 20)
                 .clipShape(Circle())
-                Text(video.author_name)
+                Text(video.author_name + " - " + video.date)
                     .font(.subheadline)
                     .foregroundColor(.primary)
                     .lineLimit(1)
             }
-            Text(video.title)
-                .font(.subheadline)
-                .foregroundColor(.primary)
-                .lineLimit(2)
         }
         .padding(8)
         .background(.regularMaterial) // 自动亮/暗

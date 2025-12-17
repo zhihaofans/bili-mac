@@ -122,7 +122,7 @@ struct HomeView: View {
                     duration: NumberUtil().formatDuration(item.duration),
                     author_name: item.owner.name,
                     author_face: item.owner.face,
-                    date: item.pubdate.toString,
+                    date: NumberUtil().formatPastTime(item.pubdate),
                     url: item.short_link_v2 ?? "https://www.bilibili.com/video/${item.bvid}",
                     bvid: item.bvid
                 )
