@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zhihaofans/SwiftUtils",
       "state" : {
-        "revision" : "727edc12372a6b85af0545b54c7e721ed4609142",
-        "version" : "0.0.14"
+        "revision" : "e966c4a9725f9e255cf3d58a5f07d904c681017b",
+        "version" : "0.0.15"
       }
     }
   ],

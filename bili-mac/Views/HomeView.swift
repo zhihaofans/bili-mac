@@ -117,12 +117,12 @@ struct HomeView: View {
                 VideoItem(
                     cover: item.pic,
                     title: item.title,
-                    play: NumberUtil().formatPlayCount(item.stat.view),
-                    danmaku: NumberUtil().formatPlayCount(item.stat.danmaku),
-                    duration: NumberUtil().formatDuration(item.duration),
+                    play: item.stat.view.toShortNumberString,
+                    danmaku: item.stat.danmaku.toShortNumberString,
+                    duration: item.duration.toShortNumberString,
                     author_name: item.owner.name,
                     author_face: item.owner.face,
-                    date: NumberUtil().formatPastTime(item.pubdate),
+                    date: item.pubdate.pastTimeString,
                     url: item.short_link_v2 ?? "https://www.bilibili.com/video/${item.bvid}",
                     bvid: item.bvid
                 )

@@ -146,10 +146,10 @@ struct VideoDetailView: View {
                     .foregroundColor(.secondary)
 
                 HStack(spacing: 14) {
-                    Label(NumberUtil().formatPlayCount(info.stat.view), systemImage: "play.fill")
-                    Label(NumberUtil().formatPlayCount(info.stat.danmaku), systemImage: "text.bubble")
-                    Label(NumberUtil().formatPlayCount(info.stat.like), systemImage: "hand.thumbsup.fill")
-                    Label(NumberUtil().formatPlayCount(info.stat.favorite), systemImage: "star.fill")
+                    Label(info.stat.view.toShortNumberString, systemImage: "play.fill")
+                    Label(info.stat.danmaku.toShortNumberString, systemImage: "text.bubble")
+                    Label(info.stat.like.toShortNumberString, systemImage: "hand.thumbsup.fill")
+                    Label(info.stat.favorite.toShortNumberString, systemImage: "star.fill")
                 }
                 .font(.caption)
                 .foregroundColor(.secondary)
