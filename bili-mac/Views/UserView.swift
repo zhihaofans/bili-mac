@@ -49,10 +49,24 @@ struct UserView: View {
                         spacing: 16
                     ) {
                         ForEach(videos) { video in
-                            VideoCard(video: video)
-                                .contextMenu {
-                                    Text(video.bvid)
-                                }
+                            NavigationLink(value: HomeRoute.video(bvid: video.bvid)) {
+                                VideoCard(video: video)
+                                    .contextMenu {
+                                        Text(video.bvid)
+
+                                        Button("复制链接") {
+                                            ClipboardUtil().setString(video.url)
+                                        }
+                                        Button("复制标题") {
+                                            ClipboardUtil().setString(video.title)
+                                        }
+                                        Divider()
+
+                                        Button("打开UP空间") {
+                                            // TODO: 打开UP空间
+                                        }
+                                    }
+                            }
                         }
                     }
                     .padding(20)
@@ -65,6 +79,12 @@ struct UserView: View {
             videos.removeAll()
             loadVideos(for: newTab)
         }
+        .navigationDestination(for: HomeRoute.self) { route in
+            switch route {
+            case .video(let bvid):
+                VideoDetailView(bvid: bvid)
+            }
+        }
         .navigationTitle("我的 - BBMac")
     }
 
@@ -76,17 +96,9 @@ struct UserView: View {
     }
 
     private func loadVideos(for tab: UserTopTab) {
-        let rankService = RankService()
-
-        let success: (BiliRankResult) -> Void = { result in
-            if result.code != 0 {
-                errorStr = "code(\(result.code)):\(result.message)"
-                loadCache()
-                return
-            }
-
-            guard let list = result.data?.list, !list.isEmpty else {
-                errorStr = "空白热门榜"
+        let success: (LaterWatchListData) -> Void = { data in
+            guard let list = data.list, !list.isEmpty else {
+                errorStr = "空白结果"
                 loadCache()
                 return
             }
@@ -101,7 +113,7 @@ struct UserView: View {
                     author_name: item.owner.name,
                     author_face: item.owner.face,
                     date: item.pubdate.toString,
-                    url: item.short_link_v2 ?? "https://www.bilibili.com/video/${item.bvid}",
+                    url: item.uri, // ?? "https://www.bilibili.com/video/${item.bvid}",
                     bvid: item.bvid
                 )
             }
@@ -116,6 +128,8 @@ struct UserView: View {
 
         // 🔥 Tab → 接口分发（关键修改点）
         switch tab {
+        case .later2watch:
+            LaterToWatchService().getList(callback: success, fail: failure)
         default:
             errorStr = "暂未实现"
             loadCache()

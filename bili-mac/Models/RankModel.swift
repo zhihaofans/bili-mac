@@ -32,14 +32,8 @@ struct BiliRankInfoData: Codable {
     let ctime: Int // 用户投稿时间
     let desc: String
     let duration: Int // 稿件总时长(所有分P)
-    let owner: BiliRankInfoOwner
+    let owner: VideoOwner
     let dynamic: String // 视频同步发布的的动态的文字内容
     let short_link_v2: String
     let tname: String // 分区类型
-}
-
-struct BiliRankInfoOwner: Codable {
-    let mid: Int
-    let name: String
-    let face: String
 }

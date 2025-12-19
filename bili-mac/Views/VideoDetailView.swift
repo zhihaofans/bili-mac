@@ -25,7 +25,7 @@ struct VideoDetailView: View {
             ctime: 1700000000,
             desc: "这是视频简介的 mock 内容，用于在未接入接口前调试布局。支持多行文本展示，长度可以随意加长。",
             duration: 360,
-            owner: BiliVideoInfoOwner(
+            owner: VideoOwner(
                 mid: 987654321,
                 name: "测试UP主",
                 face: "https://i0.hdslb.com/bfs/face/mock.jpg"
@@ -36,7 +36,7 @@ struct VideoDetailView: View {
             pages: [
             ],
             short_link_v2: "https://b23.tv/xxxxxx",
-            stat: BiliVideoStat(aid: 0, view: 0, danmaku: 0, reply: 0, favorite: 0, coin: 0, share: 0, nowRank: 0, hisRank: 0, like: 0, dislike: 0, evaluation: "", vt: 0)
+            stat: VideoStat(aid: 0, view: 0, danmaku: 0, reply: 0, favorite: 0, coin: 0, share: 0, nowRank: 0, hisRank: 0, like: 0, dislike: 0, evaluation: "", vt: 0)
         )
         self.errorStr = "loading..."
     }
