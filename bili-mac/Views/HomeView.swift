@@ -66,7 +66,7 @@ struct HomeView: View {
                                         }
                                         Button("打开UP空间") {
                                             // TODO: 打开UP空间
-                                        }
+                                        }.disabled(true)
                                     }
                             }
                         }
