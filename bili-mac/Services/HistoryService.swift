@@ -71,7 +71,7 @@ class HistoryService {
                 do {
                     print(result)
                     let data = try JSONDecoder().decode(HistoryListResultModel.self, from: result.data(using: .utf8)!)
-                    print("LaterWatchgetList")
+                    print("History.getList")
                     debugPrint(data.code)
                     if data.code == 0, data.data != nil {
                         callback(data.data!)
@@ -80,14 +80,14 @@ class HistoryService {
                     }
                 } catch {
                     print(error)
-                    print("LaterWatchgetList.catch.error")
-                    fail("LaterWatchgetList:\(error)")
+                    print("History.catch.error")
+                    fail("History:\(error)")
                 }
             }
         } fail: { error in
             print(error)
-            print("LaterWatchgetList.http.error")
-            fail("LaterWatchgetList:\(error)")
+            print("History.http.error")
+            fail("Historyfail:\(error)")
         }
     }
 }

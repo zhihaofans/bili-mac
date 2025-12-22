@@ -9,7 +9,6 @@ import Foundation
 
 struct VideoItem: Identifiable {
     let id = UUID()
-
     let cover: String // 图片名 或 URL
     let title: String // 标题
     let play: String // 播放量

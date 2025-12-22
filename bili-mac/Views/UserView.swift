@@ -51,6 +51,11 @@ struct UserView: View {
                         ForEach(videos) { video in
                             if video.bvid.isEmpty {
                                 VideoCard(video: video)
+                                    .onTapGesture {
+                                        print("=============================")
+                                        print("History.unsupported type tapped:")
+                                        print(video)
+                                    }
                                     .contextMenu {
                                         Text(video.bvid)
 
@@ -160,7 +165,7 @@ struct UserView: View {
                     let history = item.history
                     var url = ""
                     var playData = "..."
-                    var cover = item.cover // TODO: 专栏时改为item.covers[0]
+                    var cover = item.cover
                     var durationData = "..."
                     var danmakuData = "..."
                     switch history.business {
@@ -189,6 +194,8 @@ struct UserView: View {
                             let percent = Double(item.progress!) / Double(item.duration!) * 100
                             playData = String(format: "%.2f%%", percent)
                         }
+                    case "article-list":
+                        cover = item.covers?.first ?? "http://i0.hdslb.com/bfs/archive/1d40e975b09d5c87b11b3ae0c9ce6c6b82f63d9e.png"
                     default:
                         url = ""
                     }
