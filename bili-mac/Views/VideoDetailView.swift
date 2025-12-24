@@ -36,7 +36,7 @@ struct VideoDetailView: View {
             pages: [
             ],
             short_link_v2: "https://b23.tv/xxxxxx",
-            stat: VideoStat(aid: 0, view: 0, danmaku: 0, reply: 0, favorite: 0, coin: 0, share: 0, nowRank: 0, hisRank: 0, like: 0, dislike: 0, evaluation: "", vt: 0)
+            stat: VideoStat(aid: 0, view: 0, danmaku: 0, reply: 0, favorite: 0, coin: 0, share: 0, nowRank: 0, hisRank: 0, like: 0, evaluation: "")
         )
         self.errorStr = "loading..."
     }
@@ -196,7 +196,7 @@ struct VideoDetailView: View {
 
                     Spacer()
 
-                    Button("已关注") {}
+                    Button("打开空间") {}
                         .buttonStyle(.bordered)
                 }
 
@@ -238,6 +238,16 @@ struct VideoDetailView: View {
                 Text("使用哔哩哔哩 App 扫码打开")
                     .font(.caption)
                     .foregroundColor(.secondary)
+
+                Button {
+                    AppUtil().openUrl(url)
+                } label: {
+                    Text("使用本设备浏览器打开")
+                        .font(.system(size: 15, weight: .medium))
+                        .frame(minWidth: 220, minHeight: 36)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
             }
             .frame(maxWidth: .infinity)
             .padding(.top, 8)

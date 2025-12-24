@@ -13,8 +13,9 @@ struct UserView: View {
     @State private var videos: [VideoItem] = []
     @State private var errorStr: String = "欢迎使用 BBMac - 加载中..."
     var body: some View {
-        Text("这里加个人资料")
+//        Text("这里加个人资料")
         VStack(spacing: 0) {
+            UserProfileHeaderView()
             HStack(spacing: 30) {
                 ForEach(UserTopTab.allCases, id: \.self) { tab in
                     Text(tab.rawValue)
@@ -195,7 +196,13 @@ struct UserView: View {
                             playData = String(format: "%.2f%%", percent)
                         }
                     case "article-list":
-                        cover = item.covers?.first ?? "http://i0.hdslb.com/bfs/archive/1d40e975b09d5c87b11b3ae0c9ce6c6b82f63d9e.png"
+                        durationData = "专栏"
+                        cover = item.covers?.first ?? "https://i0.hdslb.com/bfs/archive/1d40e975b09d5c87b11b3ae0c9ce6c6b82f63d9e.png"
+                    case "live":
+                        playData = (item.live_status == 1).string("直播中", "未开播")
+                        danmakuData = item.tag_name!
+                        durationData = "直播"
+                        url = item.uri!
                     default:
                         url = ""
                     }
@@ -227,4 +234,79 @@ enum UserTopTab: String, CaseIterable {
     case later2watch = "稍后再看"
     case history = "历史"
     case favorite = "收藏夹"
+}
+
+struct UserProfileHeaderView: View {
+    var body: some View {
+        HStack(spacing: 20) {
+            // 头像
+            AsyncImage(url: URL(string: "https://i0.hdslb.com/bfs/face/demo.jpg")) { img in
+                img.resizable().scaledToFill()
+            } placeholder: {
+                Circle().fill(Color.gray.opacity(0.3))
+            }
+            .frame(width: 64, height: 64)
+            .clipShape(Circle())
+
+            // 名字 & 状态
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) {
+                    Text("加载中…")
+                        .font(.system(size: 18, weight: .semibold))
+
+                    Text("LV9999")
+                        .font(.system(size: 11, weight: .medium))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.pink.opacity(0.2))
+                        .cornerRadius(4)
+
+                    Text("叔叔送的年度大会员")
+                        .font(.system(size: 11))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.pink)
+                        .foregroundColor(.white)
+                        .cornerRadius(4)
+                }
+
+                Text("B币：999   硬币：999")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
+            Spacer()
+
+            // 右侧统计
+            HStack(spacing: 32) {
+                ProfileStatView(title: "动态", value: "111")
+                ProfileStatView(title: "关注", value: "222")
+                ProfileStatView(title: "粉丝", value: "333")
+            }
+
+            Image(systemName: "chevron.right")
+                .foregroundColor(.secondary)
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(nsColor: .windowBackgroundColor))
+                .opacity(0.9)
+        )
+    }
+}
+
+struct ProfileStatView: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        VStack(spacing: 4) {
+            Text(value)
+                .font(.system(size: 18, weight: .semibold))
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+    }
 }

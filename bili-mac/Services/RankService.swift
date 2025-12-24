@@ -10,12 +10,7 @@ import SwiftUtils
 
 class RankService {
     private let http = HttpUtil()
-    private let headers: HTTPHeaders = [
-        "Cookie": AccountService().cookie,
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.1 Safari/605.1.15",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Referer": "https://www.bilibili.com/",
-    ]
+    private let headers: HTTPHeaders = DefaultData.HEADERS
     init() {
         http.setHeader(headers)
     }
@@ -109,6 +104,7 @@ class RankService {
             fail("getHomePage:\(error)")
         }
     }
+
     // 入站必刷视频
     func getWeekVideo(callback: @escaping (BiliRankResult)->Void, fail: @escaping (String)->Void) {
         let url = "https://api.bilibili.com/x/web-interface/popular/series/one?number=1"

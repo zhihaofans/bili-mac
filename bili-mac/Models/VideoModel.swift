@@ -32,6 +32,7 @@ struct BiliVideoInfoData: Codable {
     let short_link_v2: String? // 短链接
     let stat: VideoStat // 视频状态数
 }
+
 struct VideoOwner: Codable {
     let mid: Int
     let name: String
@@ -57,9 +58,7 @@ struct VideoStat: Codable {
     let nowRank: Int
     let hisRank: Int
     let like: Int
-    let dislike: Int
     let evaluation: String?
-    let vt: Int
 
     enum CodingKeys: String, CodingKey {
         case aid
@@ -72,8 +71,6 @@ struct VideoStat: Codable {
         case nowRank = "now_rank"
         case hisRank = "his_rank"
         case like
-        case dislike
         case evaluation
-        case vt
     }
 }
