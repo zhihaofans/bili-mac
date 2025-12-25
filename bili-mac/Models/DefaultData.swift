@@ -17,5 +17,6 @@ class DefaultData {
         "Content-Type": DefaultData.ContentType_FORM,
         "Referer": DefaultData.Referer_BILI,
     ]
+
     init() {}
 }

@@ -13,7 +13,6 @@ struct UserView: View {
     @State private var videos: [VideoItem] = []
     @State private var errorStr: String = "欢迎使用 BBMac - 加载中..."
     var body: some View {
-//        Text("这里加个人资料")
         VStack(spacing: 0) {
             UserProfileHeaderView()
             HStack(spacing: 30) {
@@ -237,62 +236,130 @@ enum UserTopTab: String, CaseIterable {
 }
 
 struct UserProfileHeaderView: View {
+    @State private var userName: String = "加载中…"
+    @State private var userNameColor: String = "#FB7299"
+    @State private var userFace: String = "https://i0.hdslb.com/bfs/face/demo.jpg"
+    @State private var userLV: String = "LV9999"
+    @State private var userSign: String = "并没有签名"
+    @State private var vipTitle: String = "叔叔送的年度大会员"
+    @State private var coins: Double = -1
+    @State private var following: Int = -1
+    @State private var fans: Int = -1
+
     var body: some View {
-        HStack(spacing: 20) {
-            // 头像
-            AsyncImage(url: URL(string: "https://i0.hdslb.com/bfs/face/demo.jpg")) { img in
-                img.resizable().scaledToFill()
-            } placeholder: {
-                Circle().fill(Color.gray.opacity(0.3))
-            }
-            .frame(width: 64, height: 64)
-            .clipShape(Circle())
+        VStack(spacing: 0) {
+            HStack(spacing: 20) {
+                // 头像
+                AsyncImage(url: URL(string: userFace)) { img in
+                    img.resizable().scaledToFill()
+                } placeholder: {
+                    Circle().fill(Color.gray.opacity(0.3))
+                }
+                .frame(width: 64, height: 64)
+                .clipShape(Circle())
 
-            // 名字 & 状态
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 8) {
-                    Text("加载中…")
-                        .font(.system(size: 18, weight: .semibold))
+                // 名字 & 状态
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 8) {
+                        Text(userName)
+                            .foregroundColor(Color(hex: userNameColor /* "#FB7299" */ ))
+                            .font(.system(size: 18, weight: .semibold))
 
-                    Text("LV9999")
-                        .font(.system(size: 11, weight: .medium))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.pink.opacity(0.2))
-                        .cornerRadius(4)
+                        Text(userLV)
+                            .font(.system(size: 11, weight: .medium))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.pink.opacity(0.2))
+                            .cornerRadius(4)
 
-                    Text("叔叔送的年度大会员")
-                        .font(.system(size: 11))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.pink)
-                        .foregroundColor(.white)
-                        .cornerRadius(4)
+                        Text(vipTitle)
+                            .font(.system(size: 11))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color.pink)
+                            .foregroundColor(.white)
+                            .cornerRadius(4)
+                    }
+
+                    Text(userSign)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
 
-                Text("B币：999   硬币：999")
-                    .font(.caption)
+                Spacer()
+
+                // 右侧统计
+                HStack(spacing: 32) {
+                    ProfileStatView(title: "硬币", value: String(coins))
+                    ProfileStatView(title: "关注", value: following.toString)
+                    ProfileStatView(title: "粉丝", value: fans.toString)
+                }
+
+                Image(systemName: "chevron.right")
                     .foregroundColor(.secondary)
             }
-
-            Spacer()
-
-            // 右侧统计
-            HStack(spacing: 32) {
-                ProfileStatView(title: "动态", value: "111")
-                ProfileStatView(title: "关注", value: "222")
-                ProfileStatView(title: "粉丝", value: "333")
+            .padding(20)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(nsColor: .windowBackgroundColor))
+                    .opacity(0.9)
+            )
+        }.onAppear {
+            UserService().getUserSpaceInfo { data in
+                userName = data.name
+                userFace = data.face
+                userSign = data.sign
+                userLV = "LV\(data.level)"
+                userNameColor = data.vip.nickname_color.isEmpty ? "#FB7299" : data.vip.nickname_color
+                coins = data.coins
+                following = data.following
+                fans = data.follower
+            } fail: { errStr in
+                userName = errStr
+                print(errStr)
             }
-
-            Image(systemName: "chevron.right")
-                .foregroundColor(.secondary)
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(nsColor: .windowBackgroundColor))
-                .opacity(0.9)
-        )
+    }
+}
+
+extension Color {
+    /// 支持：
+    /// - RGB  (如 #F0A)
+    /// - RRGGBB (如 #FB7299)
+    /// - AARRGGBB (如 #FFFB7299)
+    init(hex: String) {
+        var hex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hex = hex.replacingOccurrences(of: "#", with: "")
+
+        var value: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&value)
+
+        let r, g, b, a: Double
+
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            r = Double((value >> 8) & 0xF) / 15.0
+            g = Double((value >> 4) & 0xF) / 15.0
+            b = Double(value & 0xF) / 15.0
+            a = 1.0
+
+        case 6: // RRGGBB (24-bit)
+            r = Double((value >> 16) & 0xFF) / 255.0
+            g = Double((value >> 8) & 0xFF) / 255.0
+            b = Double(value & 0xFF) / 255.0
+            a = 1.0
+
+        case 8: // AARRGGBB (32-bit)
+            a = Double((value >> 24) & 0xFF) / 255.0
+            r = Double((value >> 16) & 0xFF) / 255.0
+            g = Double((value >> 8) & 0xFF) / 255.0
+            b = Double(value & 0xFF) / 255.0
+
+        default:
+            r = 0; g = 0; b = 0; a = 1
+        }
+
+        self.init(.sRGB, red: r, green: g, blue: b, opacity: a)
     }
 }
 
