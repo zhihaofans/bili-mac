@@ -314,6 +314,11 @@ struct UserProfileHeaderView: View {
                 coins = data.coins
                 following = data.following
                 fans = data.follower
+                if data.vip.status == 1 {
+                    vipTitle = data.vip.label.text
+                } else {
+                    vipTitle = "不是大会员"
+                }
             } fail: { errStr in
                 userName = errStr
                 print(errStr)

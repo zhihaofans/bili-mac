@@ -37,4 +37,5 @@ struct UserVipData: Codable {
 
 struct UserVipDataLabel: Codable {
     let label_theme: String
+    let text: String
 }
