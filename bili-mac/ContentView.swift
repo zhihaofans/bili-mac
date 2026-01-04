@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedSidebar: SidebarItem? = .home
+    @State private var selectedSidebar: SidebarItem? = .dynamic
     var body: some View {
         NavigationSplitView {
             SidebarView(selected: $selectedSidebar)
@@ -17,8 +17,8 @@ struct ContentView: View {
                 switch selectedSidebar {
                 case .home:
                     HomeView()
-//            case .dynamic:
-//                Text("Hello, 动态!")
+                case .dynamic:
+                    DynamicView()
                 case .mine:
                     UserView()
                 case .setting:
