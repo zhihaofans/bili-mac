@@ -135,8 +135,31 @@ struct DynamicListItem: Codable {
         }
     }
 
-    var cover: String {
-        modules.author.pub_time
+    var cover: String? {
+        switch type {
+        case DynamicType.av.rawValue:
+            modules.dynamic.major?.archive?.cover
+        default:
+            nil
+        }
+    }
+
+    var title: String? {
+        switch type {
+        case DynamicType.av.rawValue:
+            modules.dynamic.major?.archive?.title
+        default:
+            nil
+        }
+    }
+
+    var url: String? {
+        switch type {
+        case DynamicType.av.rawValue:
+            modules.dynamic.major?.archive?.jump_url
+        default:
+            nil
+        }
     }
 }
 
@@ -173,4 +196,20 @@ struct ModuleDynamic: Codable {
 
 struct ModuleDynamicMajor: Codable {
     let type: String?
+    let archive: ModuleDynamicMajorArchive?
+}
+
+struct ModuleDynamicMajorArchive: Codable {
+    let title: String
+    let desc: String
+    let cover: String
+    let jump_url: String?
+    let bvid: String?
+    let stat: ModuleTyperchiveStat
+    let duration_text: String // 视频长度
+}
+
+struct ModuleTyperchiveStat: Codable {
+    let danmaku: String
+    let play: String
 }

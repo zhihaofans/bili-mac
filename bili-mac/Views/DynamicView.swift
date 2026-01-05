@@ -182,15 +182,88 @@ struct DynamicContentView: View {
     let item: DynamicListItem
 
     var body: some View {
-        if item.isSupported{
-                switch DynamicType(rawValue: item.type) {
-                default:
-                    EmptyView()
-                }
-        }else{
+        if item.isSupported {
+            switch DynamicType(rawValue: item.type) {
+            case .av:
+                DynamicVideoItemView(item: item)
+            default:
+                EmptyView()
+            }
+        } else {
             Text("⚠️ 暂不支持此动态类型：\(item.typeName)")
                 .font(.headline)
                 .foregroundColor(.red)
+        }
+    }
+}
+
+struct DynamicVideoItemView: View {
+    let item: DynamicListItem
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // 标题
+            Text(item.title ?? "「没有标题」")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundColor(.primary)
+                .lineLimit(2)
+
+            // 视频封面
+            VideoCoverView(
+                cover: item.cover ?? "https://i0.hdslb.com/bfs/archive/1d40e975b09d5c87b11b3ae0c9ce6c6b82f63d9e.png",
+                duration: item.modules.dynamic.major?.archive?.duration_text ?? "时长",
+                playCount: item.modules.dynamic.major?.archive?.stat.play ?? "0"
+            )
+        }
+    }
+}
+
+struct VideoCoverView: View {
+    let cover: String
+    let duration: String
+    let playCount: String
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            AsyncImage(url: URL(string: cover.httpToHttps)) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                Color.gray.opacity(0.25)
+            }
+            .frame(height: 240)
+            .clipped()
+            .cornerRadius(10)
+
+            // 左下角：播放量
+            HStack(spacing: 8) {
+                Image(systemName: "play.fill")
+                    .font(.system(size: 10))
+
+                Text(playCount)
+                    .font(.system(size: 12))
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(.black.opacity(0.6))
+            .cornerRadius(6)
+            .foregroundColor(.white)
+            .padding(8)
+
+            // 右下角：时长
+            HStack {
+                Spacer()
+
+                Text(duration)
+                    .font(.system(size: 12))
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(.black.opacity(0.6))
+                    .cornerRadius(4)
+                    .foregroundColor(.white)
+                    .padding(8)
+            }
         }
     }
 }
