@@ -201,47 +201,49 @@ struct DynamicVideoItemView: View {
     let item: DynamicListItem
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // 标题
-            Text(item.title ?? "「没有标题」")
-                .font(.system(size: 15, weight: .medium))
-                .foregroundColor(.primary)
-                .lineLimit(2)
-
-            // 视频封面
-            VideoCoverView(
-                cover: item.cover ?? "https://i0.hdslb.com/bfs/archive/1d40e975b09d5c87b11b3ae0c9ce6c6b82f63d9e.png",
-                duration: item.modules.dynamic.major?.archive?.duration_text ?? "时长",
-                playCount: item.modules.dynamic.major?.archive?.stat.play ?? "0"
+        NavigationLink {
+            VideoDetailView(
+                bvid: item.modules.dynamic.major?.archive?.bvid ?? ""
             )
+        } label: {
+            VStack(alignment: .leading, spacing: 12) {
+                // 标题
+                Text(item.title ?? "「没有标题」")
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundColor(.primary)
+                    .lineLimit(2)
+
+                // 视频封面
+                VideoCoverView(item: item)
+            }
         }
+        .buttonStyle(.plain)
     }
 }
 
 struct VideoCoverView: View {
-    let cover: String
-    let duration: String
-    let playCount: String
+    let item: DynamicListItem
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            AsyncImage(url: URL(string: cover.httpToHttps)) { image in
+            AsyncImage(url: URL(string: (item.cover ?? "https://i0.hdslb.com/bfs/archive/1d40e975b09d5c87b11b3ae0c9ce6c6b82f63d9e.png").httpToHttps)) { image in
                 image
                     .resizable()
                     .scaledToFill()
+                    .aspectRatio(16 / 9, contentMode: .fill)
+                    .frame(maxWidth: .infinity)
+                    .clipped()
+                    .cornerRadius(10)
             } placeholder: {
                 Color.gray.opacity(0.25)
             }
-            .frame(height: 240)
-            .clipped()
-            .cornerRadius(10)
 
             // 左下角：播放量
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.system(size: 10))
 
-                Text(playCount)
+                Text(item.modules.dynamic.major?.archive?.stat.play ?? "0")
                     .font(.system(size: 12))
             }
             .padding(.horizontal, 8)
@@ -255,7 +257,7 @@ struct VideoCoverView: View {
             HStack {
                 Spacer()
 
-                Text(duration)
+                Text(item.modules.dynamic.major?.archive?.duration_text ?? "时长")
                     .font(.system(size: 12))
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
