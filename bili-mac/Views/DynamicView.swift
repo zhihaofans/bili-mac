@@ -185,14 +185,35 @@ struct DynamicContentView: View {
         if item.isSupported {
             switch DynamicType(rawValue: item.type) {
             case .av:
+                NavigationLink {
+                    VideoDetailView(
+                        bvid: item.modules.dynamic.major?.archive?.bvid ?? ""
+                    )
+                } label: {
+                    DynamicVideoItemView(item: item)
+                }
+                .buttonStyle(.plain)
+            case .draw:
+                DynamicVideoItemView(item: item)
+            case .word:
                 DynamicVideoItemView(item: item)
             default:
                 EmptyView()
             }
+        } else if item.majorType != nil {
+            Text("⚠️ 暂不支持此动态类型：\(item.majorType!.rawValue)")
+                .font(.headline)
+                .foregroundColor(.red)
+                .onClick {
+                    print(item)
+                }
         } else {
             Text("⚠️ 暂不支持此动态类型：\(item.typeName)")
                 .font(.headline)
                 .foregroundColor(.red)
+                .onClick {
+                    print(item)
+                }
         }
     }
 }
@@ -201,70 +222,79 @@ struct DynamicVideoItemView: View {
     let item: DynamicListItem
 
     var body: some View {
-        NavigationLink {
-            VideoDetailView(
-                bvid: item.modules.dynamic.major?.archive?.bvid ?? ""
-            )
-        } label: {
-            VStack(alignment: .leading, spacing: 12) {
-                // 标题
-                Text(item.title ?? "「没有标题」")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.primary)
-                    .lineLimit(2)
-
+        VStack(alignment: .leading, spacing: 12) {
+            // 标题
+            Text(item.title ?? item.desc ?? "「没有标题」")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundColor(.primary)
+                .lineLimit(5)
+            if item.cover.isNotEmpty {
                 // 视频封面
                 VideoCoverView(item: item)
             }
         }
-        .buttonStyle(.plain)
     }
 }
 
 struct VideoCoverView: View {
     let item: DynamicListItem
-
+    @State private var aspectRatio: CGFloat = 16.0 / 9.0
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            AsyncImage(url: URL(string: (item.cover ?? "https://i0.hdslb.com/bfs/archive/1d40e975b09d5c87b11b3ae0c9ce6c6b82f63d9e.png").httpToHttps)) { image in
+            AsyncImage(url: URL(string: item.cover!.httpToHttps)) { image in
                 image
                     .resizable()
                     .scaledToFill()
-                    .aspectRatio(16 / 9, contentMode: .fill)
-                    .frame(maxWidth: .infinity)
+                    .aspectRatio(aspectRatio, contentMode: .fill)
+                    .frame(maxWidth: .infinity, maxHeight: 360)
                     .clipped()
                     .cornerRadius(10)
             } placeholder: {
                 Color.gray.opacity(0.25)
             }
-
-            // 左下角：播放量
-            HStack(spacing: 8) {
-                Image(systemName: "play.fill")
-                    .font(.system(size: 10))
-
-                Text(item.modules.dynamic.major?.archive?.stat.play ?? "0")
-                    .font(.system(size: 12))
+            .contextMenu {
+                Button("复制封面链接") {
+                    ClipboardUtil().setString(item.cover!.httpToHttps)
+                }
+                Button("复制封面图片") {
+                }.disabled(true)
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(.black.opacity(0.6))
-            .cornerRadius(6)
-            .foregroundColor(.white)
-            .padding(8)
+            if item.type == DynamicType.av.rawValue {
+                // 左下角：播放量
+                HStack(spacing: 8) {
+                    Image(systemName: "play.fill")
+                        .font(.system(size: 10))
 
-            // 右下角：时长
-            HStack {
-                Spacer()
+                    Text(item.modules.dynamic.major?.archive?.stat.play ?? "0")
+                        .font(.system(size: 12))
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(.black.opacity(0.6))
+                .cornerRadius(6)
+                .foregroundColor(.white)
+                .padding(8)
 
-                Text(item.modules.dynamic.major?.archive?.duration_text ?? "时长")
-                    .font(.system(size: 12))
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(.black.opacity(0.6))
-                    .cornerRadius(4)
-                    .foregroundColor(.white)
-                    .padding(8)
+                // 右下角：时长
+                HStack {
+                    Spacer()
+
+                    Text(item.modules.dynamic.major?.archive?.duration_text ?? "时长")
+                        .font(.system(size: 12))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(.black.opacity(0.6))
+                        .cornerRadius(4)
+                        .foregroundColor(.white)
+                        .padding(8)
+                }
+            }
+        }.onAppear {
+            if let pic = item.modules.dynamic.major?.opus?.pics.first,
+               pic.width > 0,
+               pic.height > 0
+            {
+                aspectRatio = CGFloat(pic.width / pic.height)
             }
         }
     }
