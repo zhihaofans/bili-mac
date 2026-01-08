@@ -131,6 +131,16 @@ struct DynamicCardView: View {
         .padding(16)
         .background(Color(nsColor: .controlBackgroundColor))
         .cornerRadius(12)
+        .shadow(
+            color: Color.black.opacity(0.15),
+            radius: 8,
+            x: 0,
+            y: 4
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.white.opacity(0.04), lineWidth: 1)
+        )
     }
 }
 
@@ -228,8 +238,11 @@ struct DynamicVideoItemView: View {
                 .font(.system(size: 15, weight: .medium))
                 .foregroundColor(.primary)
                 .lineLimit(5)
-            if item.cover.isNotEmpty {
+            if let pics = item.modules.dynamic.major?.opus?.pics, pics.count > 1 {
+                DynamicImageGridView(pics: pics)
+            } else if item.cover.isNotEmpty {
                 // 视频封面
+
                 VideoCoverView(item: item)
             }
         }
@@ -253,11 +266,7 @@ struct VideoCoverView: View {
                 Color.gray.opacity(0.25)
             }
             .contextMenu {
-                Button("复制封面链接") {
-                    ClipboardUtil().setString(item.cover!.httpToHttps)
-                }
-                Button("复制封面图片") {
-                }.disabled(true)
+                ImageMenu(img: item.cover!.httpToHttps)
             }
             if item.type == DynamicType.av.rawValue {
                 // 左下角：播放量
@@ -295,6 +304,43 @@ struct VideoCoverView: View {
                pic.height > 0
             {
                 aspectRatio = CGFloat(pic.width / pic.height)
+            }
+        }
+    }
+}
+
+// 九宫格图片视图
+struct DynamicImageGridView: View {
+    let pics: [ModuleDynamicMajorOpusPics]
+
+    private let size: CGFloat = 120
+    private let spacing: CGFloat = 6
+
+    private let columns = Array(
+        repeating: GridItem(.fixed(120), spacing: 6),
+        count: 3
+    )
+
+    var body: some View {
+        LazyVGrid(columns: columns, spacing: spacing) {
+            ForEach(pics.prefix(9), id: \.url) { pic in
+                AsyncImage(url: URL(string: pic.url.httpToHttps)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Color.gray.opacity(0.25)
+                }
+                .frame(width: size, height: size)
+                .clipped()
+                .cornerRadius(6)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(Color.primary.opacity(0.12), lineWidth: 0.5)
+                )
+                .contextMenu {
+                    ImageMenu(img: pic.url.httpToHttps)
+                }
             }
         }
     }

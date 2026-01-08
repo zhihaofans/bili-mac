@@ -123,12 +123,7 @@ struct VideoDetailView: View {
                 .padding()
             }
             .contextMenu {
-                Button("复制封面链接") {
-                    ClipboardUtil().setString(coverURL)
-                }
-                Button("复制封面图片") {
-//                    ClipboardUtil().setImage()
-                }.disabled(true)
+                ImageMenu(img: coverURL)
             }
         }
     }
