@@ -10,13 +10,14 @@ import SwiftUtils
 
 struct DynamicView: View {
     @State private var selected: DynamicTopTab = .all
+    @State private var searchKey: String = ""
     var body: some View {
         VStack(spacing: 0) {
-            DynamicTopBarView(selected: selected) // tab + 搜索
+            DynamicTopBarView(selected: selected, searchKey: $searchKey) // tab + 搜索
 
             Divider()
 
-            DynamicFeedView(selected: selected) // 动态流
+            DynamicFeedView(selected: selected, searchKey: $searchKey) // 动态流
         }
         .background(Color(nsColor: .windowBackgroundColor))
         .setNavigationTitle("动态")
@@ -26,6 +27,7 @@ struct DynamicView: View {
 struct DynamicTopBarView: View {
     @State var selected: DynamicTopTab = .all
 
+    @Binding var searchKey: String
     var body: some View {
         HStack {
             ForEach(DynamicTopTab.allCases, id: \.self) { tab in
@@ -38,7 +40,7 @@ struct DynamicTopBarView: View {
             Spacer()
 
             // 搜索
-            TextField("搜索你感兴趣的动态", text: .constant(""))
+            TextField("搜索你感兴趣的动态", text: $searchKey)
                 .textFieldStyle(.roundedBorder)
                 .frame(width: 240)
         }
@@ -49,10 +51,26 @@ struct DynamicTopBarView: View {
 
 struct DynamicFeedView: View {
     @State var selected: DynamicTopTab = .all
+    @Binding var searchKey: String
     @State private var dynamicList: [DynamicListItem] = []
     @State private var errorStr: String = ""
     @State private var isLoading: Bool = true
     @State private var isError: Bool = false
+    private var filteredList: [DynamicListItem] {
+        guard !searchKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return dynamicList
+        }
+        return dynamicList.filter { item in
+            let key = searchKey.lowercased()
+            let title = (item.title ?? "").lowercased()
+            let desc = (item.desc ?? "").lowercased()
+            let author = item.authorName.lowercased()
+            return title.contains(key)
+                || desc.contains(key)
+                || author.contains(key)
+        }
+    }
+
     var body: some View {
         ScrollView {
             HStack {
@@ -67,7 +85,7 @@ struct DynamicFeedView: View {
                         .padding(.top, 20)
                 } else {
                     VStack(spacing: 16) {
-                        ForEach(dynamicList, id: \.id) { item in
+                        ForEach(filteredList, id: \.id) { item in
                             DynamicCardView(item: item)
                         }
                     }
@@ -238,11 +256,11 @@ struct DynamicVideoItemView: View {
                 .font(.system(size: 15, weight: .medium))
                 .foregroundColor(.primary)
                 .lineLimit(5)
-            if let pics = item.modules.dynamic.major?.opus?.pics, pics.count > 1 {
-                DynamicImageGridView(pics: pics)
+            if item.images.count > 1 {
+                // 多图九宫格
+                DynamicImageGridView(pics: item.images)
             } else if item.cover.isNotEmpty {
                 // 视频封面
-
                 VideoCoverView(item: item)
             }
         }

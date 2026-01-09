@@ -11,10 +11,10 @@ import SwiftUtils
 struct ImageMenu: View {
     let img: String
     var body: some View {
-        Button("复制封面链接") {
+        Button("复制图片链接") {
             ClipboardUtil().setString(img.httpToHttps)
         }
-        Button("预览封面图片") {
+        Button("预览图片") {
             PreviewUtil.showPreview(url: img.httpToHttps)
         }
     }

@@ -49,11 +49,13 @@ enum DynamicType: String {
 enum MajorType: String {
     case archive = "MAJOR_TYPE_ARCHIVE"
     case opus = "MAJOR_TYPE_OPUS"
+    case article = "MAJOR_TYPE_ARTICLE"
 
     var text: String {
         switch self {
         case .archive: return "视频"
         case .opus: return "图文动态"
+        case .article: return "专栏"
         }
     }
 }
@@ -126,16 +128,26 @@ struct DynamicListItem: Codable {
         modules.dynamic.desc?.text ?? modules.dynamic.major?.archive?.desc ?? opus?.summary.text
     }
 
+    var images: [ModuleDynamicMajorOpusPics] {
+        opus?.pics ?? modules.dynamic.major?.article?.covers ?? []
+    }
+
     var isSupported: Bool {
-        switch type {
-        case DynamicType.av.rawValue:
+        if opus != nil {
             true
-        case DynamicType.draw.rawValue:
-            true
-        case DynamicType.word.rawValue:
-            true
-        default:
-            false
+        } else {
+            switch type {
+            case DynamicType.av.rawValue:
+                true
+            case DynamicType.draw.rawValue:
+                true
+            case DynamicType.word.rawValue:
+                true
+            case DynamicType.article.rawValue:
+                true
+            default:
+                false
+            }
         }
     }
 
@@ -157,15 +169,17 @@ struct DynamicListItem: Codable {
     }
 
     var title: String? {
-        switch type {
-        case DynamicType.av.rawValue:
-            modules.dynamic.major?.archive?.title
-        case DynamicType.draw.rawValue:
-            modules.dynamic.major?.opus?.title
-        case DynamicType.word.rawValue:
-            modules.dynamic.major?.archive?.title
-        default:
-            nil
+        if opus != nil {
+            opus?.title
+        } else {
+            switch type {
+            case DynamicType.av.rawValue:
+                modules.dynamic.major?.archive?.title
+            case DynamicType.word.rawValue:
+                modules.dynamic.major?.archive?.title
+            default:
+                nil
+            }
         }
     }
 
@@ -174,11 +188,17 @@ struct DynamicListItem: Codable {
     }
 
     var url: String? {
-        switch type {
-        case DynamicType.av.rawValue:
-            modules.dynamic.major?.archive?.jump_url
-        default:
-            nil
+        if opus != nil {
+            opus?.jump_url
+        } else {
+            switch type {
+            case DynamicType.av.rawValue:
+                modules.dynamic.major?.archive?.jump_url
+            case DynamicType.article.rawValue:
+                modules.dynamic.major?.article?.jump_url
+            default:
+                nil
+            }
         }
     }
 }
@@ -223,6 +243,7 @@ struct ModuleDynamicMajor: Codable {
     let type: String?
     let archive: ModuleDynamicMajorArchive? // 投稿视频
     let opus: ModuleDynamicMajorOpus? // 图文动态opus
+    let article: ModuleDynamicMajorArticle? // 投稿专栏
 }
 
 struct ModuleDynamicMajorArchive: Codable {
@@ -251,6 +272,12 @@ struct ModuleDynamicMajorOpusPics: Codable {
 
 struct ModuleDynamicMajorOpusSummary: Codable {
     let text: String
+}
+
+struct ModuleDynamicMajorArticle: Codable {
+    let jump_url: String?
+    let covers: [ModuleDynamicMajorOpusPics]
+    let title: String?
 }
 
 struct ModuleTyperchiveStat: Codable {
