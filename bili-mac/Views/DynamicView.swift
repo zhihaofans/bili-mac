@@ -65,9 +65,13 @@ struct DynamicFeedView: View {
             let title = (item.title ?? "").lowercased()
             let desc = (item.desc ?? "").lowercased()
             let author = item.authorName.lowercased()
+            let type = item.typeName.lowercased()
+            let majorType = (item.majorType?.text ?? "").lowercased()
             return title.contains(key)
                 || desc.contains(key)
                 || author.contains(key)
+                || type.contains(key)
+                || majorType.contains(key)
         }
     }
 
