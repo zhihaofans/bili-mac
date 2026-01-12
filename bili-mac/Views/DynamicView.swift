@@ -192,6 +192,9 @@ struct DynamicHeaderView: View {
                     Text(item.typeName)
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
+                        .onClick {
+                            print(item)
+                        }
                 }
             }
 
@@ -228,6 +231,8 @@ struct DynamicContentView: View {
             case .draw:
                 DynamicVideoItemView(item: item)
             case .word:
+                DynamicVideoItemView(item: item)
+            case .liveRcmd:
                 DynamicVideoItemView(item: item)
             default:
                 EmptyView()
@@ -267,6 +272,9 @@ struct DynamicVideoItemView: View {
                 // 视频封面
                 VideoCoverView(item: item)
             }
+        }.onAppear {
+            print("jsonData")
+            print(item.modules.dynamic.major?.live_rcmd?.content)
         }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUtils
 
 enum DynamicType: String {
     case none = "DYNAMIC_TYPE_NONE"
@@ -119,6 +120,8 @@ struct DynamicListItem: Codable {
             modules.dynamic.major?.archive?.cover
         case DynamicType.draw.rawValue:
             modules.dynamic.major?.opus?.pics.first?.url
+        case DynamicType.liveRcmd.rawValue:
+            modules.dynamic.major?.live_rcmd?.cover
         default:
             nil
         }
@@ -145,6 +148,8 @@ struct DynamicListItem: Codable {
                 true
             case DynamicType.article.rawValue:
                 true
+            case DynamicType.liveRcmd.rawValue:
+                true
             default:
                 false
             }
@@ -165,7 +170,7 @@ struct DynamicListItem: Codable {
     }
 
     var pushTime: String {
-        modules.author.pub_time
+        modules.dynamic.major?.live_rcmd?.data?.live_play_info.live_start_time.pastTimeString ?? modules.author.pub_time
     }
 
     var title: String? {
@@ -177,6 +182,8 @@ struct DynamicListItem: Codable {
                 modules.dynamic.major?.archive?.title
             case DynamicType.word.rawValue:
                 modules.dynamic.major?.archive?.title
+            case DynamicType.liveRcmd.rawValue:
+                modules.dynamic.major?.live_rcmd?.title
             default:
                 nil
             }
@@ -244,6 +251,7 @@ struct ModuleDynamicMajor: Codable {
     let archive: ModuleDynamicMajorArchive? // 投稿视频
     let opus: ModuleDynamicMajorOpus? // 图文动态opus
     let article: ModuleDynamicMajorArticle? // 投稿专栏
+    let live_rcmd: ModuleDynamicMajorLive? // 直播推荐
 }
 
 struct ModuleDynamicMajorArchive: Codable {
@@ -278,6 +286,42 @@ struct ModuleDynamicMajorArticle: Codable {
     let jump_url: String?
     let covers: [ModuleDynamicMajorOpusPics]
     let title: String?
+}
+
+struct ModuleDynamicMajorLive: Codable {
+    let content: String?
+
+    var data: ModuleDynamicMajorLiveData? {
+        guard let content else { return nil }
+        guard let jsonData = content.data(using: .utf8) else { return nil }
+        return try? JSONDecoder().decode(
+            ModuleDynamicMajorLiveData.self,
+            from: jsonData
+        )
+    }
+
+    var title: String? {
+        data?.live_play_info.title
+    }
+
+    var cover: String? {
+        data?.live_play_info.cover
+    }
+}
+
+struct ModuleDynamicMajorLiveData: Codable {
+    let type: Int
+    let live_play_info: ModuleDynamicMajorLiveDataInfo
+}
+
+struct ModuleDynamicMajorLiveDataInfo: Codable {
+    let title: String // 直播标题
+    let cover: String // 直播封面
+    let area_id: Int // 直播分区ID
+    let area_name: String // 直播分区名称
+    let live_start_time: Int // 开始直播时间
+    let live_id: String // 直播间id
+    let link: String
 }
 
 struct ModuleTyperchiveStat: Codable {
