@@ -23,24 +23,23 @@ class RankService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
-                    print("getTopRanking")
-                    debugPrint(data.code)
+                    SU.log.i("getTopRanking")
+                    SU.log.info(data.code)
                     if data.code == 0 {
                         callback(data)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("getTopRanking.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("getTopRanking.catch.error")
                     fail("getTopRanking:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("getTopRanking.http.error")
+            SU.log.e(error)
+            SU.log.e("getTopRanking.http.error")
             fail("getTopRanking:\(error)")
         }
     }
@@ -53,24 +52,23 @@ class RankService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
-                    print("getHomePage")
-                    debugPrint(data.code)
+                    SU.log.i("getHomePage")
+                    SU.log.info(data.code)
                     if data.code == 0 {
                         callback(data)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("getHomePage.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("getHomePage.catch.error")
                     fail("getHomePage:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("getHomePage.http.error")
+            SU.log.e(error)
+            SU.log.e("getHomePage.http.error")
             fail("getHomePage:\(error)")
         }
     }
@@ -83,24 +81,23 @@ class RankService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
-                    print("getHomePage")
-                    debugPrint(data.code)
+                    SU.log.i("getHomePage")
+                    SU.log.info(data.code)
                     if data.code == 0 {
                         callback(data)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("getHomePage.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("getHomePage.catch.error")
                     fail("getHomePage:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("getHomePage.http.error")
+            SU.log.e(error)
+            SU.log.e("getHomePage.http.error")
             fail("getHomePage:\(error)")
         }
     }
@@ -113,24 +110,23 @@ class RankService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(BiliRankResult.self, from: result.data(using: .utf8)!)
-                    print("getHomePage")
-                    debugPrint(data.code)
+                    SU.log.i("getHomePage")
+                    SU.log.info(data.code)
                     if data.code == 0 {
                         callback(data)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("getHomePage.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("getHomePage.catch.error")
                     fail("getHomePage:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("getHomePage.http.error")
+            SU.log.e(error)
+            SU.log.e("getHomePage.http.error")
             fail("getHomePage:\(error)")
         }
     }

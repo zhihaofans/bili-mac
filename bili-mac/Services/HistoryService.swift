@@ -15,6 +15,34 @@ class LaterToWatchService {
         http.setHeader(headers)
     }
 
+    func addToList(callback: @escaping (LaterWatchListData)->Void, fail: @escaping (String)->Void) {
+        let url = "https://api.bilibili.com/x/v2/history/toview/add"
+        http.get(url) { result in
+            if result.isEmpty {
+                fail("result.isEmpty")
+            } else {
+                do {
+                    let data = try JSONDecoder().decode(LaterWatchListResultModel.self, from: result.data(using: .utf8)!)
+                    SU.log.i("LaterWatchgetList")
+                    SU.log.info(data.code)
+                    if data.code == 0, data.data != nil {
+                        callback(data.data!)
+                    } else {
+                        fail("Code \(data.code): \(data.message)")
+                    }
+                } catch {
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("LaterWatchgetList.catch.error")
+                    fail("LaterWatchgetList:\(error)")
+                }
+            }
+        } fail: { error in
+            SU.log.e(error)
+            SU.log.e("LaterWatchgetList.http.error")
+            fail("LaterWatchgetList:\(error)")
+        }
+    }
+
     func getList(callback: @escaping (LaterWatchListData)->Void, fail: @escaping (String)->Void) {
         let url = "https://api.bilibili.com/x/v2/history/toview"
         http.get(url) { result in
@@ -22,24 +50,23 @@ class LaterToWatchService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(LaterWatchListResultModel.self, from: result.data(using: .utf8)!)
-                    print("LaterWatchgetList")
-                    debugPrint(data.code)
+                    SU.log.i("LaterWatchgetList")
+                    SU.log.info(data.code)
                     if data.code == 0, data.data != nil {
                         callback(data.data!)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("LaterWatchgetList.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("LaterWatchgetList.catch.error")
                     fail("LaterWatchgetList:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("LaterWatchgetList.http.error")
+            SU.log.e(error)
+            SU.log.e("LaterWatchgetList.http.error")
             fail("LaterWatchgetList:\(error)")
         }
     }
@@ -59,24 +86,23 @@ class HistoryService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(HistoryListResultModel.self, from: result.data(using: .utf8)!)
-                    print("History.getList")
-                    debugPrint(data.code)
+                    SU.log.i("History.getList")
+                    SU.log.info(data.code)
                     if data.code == 0, data.data != nil {
                         callback(data.data!)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("History.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("History.catch.error")
                     fail("History:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("History.http.error")
+            SU.log.e(error)
+            SU.log.e("History.http.error")
             fail("Historyfail:\(error)")
         }
     }

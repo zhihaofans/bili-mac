@@ -22,24 +22,23 @@ class UserService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(UserSpaceInfoResult.self, from: result.data(using: .utf8)!)
-                    print("getUserSpaceInfo")
-                    debugPrint(data.code)
+                    SU.log.i("getUserSpaceInfo")
+                    SU.log.info(data.code)
                     if data.code == 0, data.data != nil {
                         callback(data.data!)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("getUserSpaceInfo.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("getUserSpaceInfo.catch.error")
                     fail("getUserSpaceInfo:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("getUserSpaceInfo.http.error")
+            SU.log.e(error)
+            SU.log.e("getUserSpaceInfo.http.error")
             fail("getUserSpaceInfo.fail:\(error)")
         }
     }

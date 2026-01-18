@@ -11,7 +11,6 @@ import SwiftUtils
 class DynamicService {
     private let http = HttpUtil()
     private let headers: HTTPHeaders = DefaultData.HEADERS
-   
 
     init() {
         http.setHeader(headers)
@@ -25,25 +24,25 @@ class DynamicService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
+                    SU.log.i(result)
                     let data = try JSONDecoder().decode(DynamicListResultModel.self, from: result.data(using: .utf8)!)
-                    print("getDynamicList")
-                    debugPrint(data.code)
+                    SU.log.i("getDynamicList")
+                    SU.log.info(data.code)
                     if data.code == 0, data.data != nil {
                         callback(data.data!)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print("=====getDynamicList.catch.error======")
-                    print(error)
-                    print("getDynamicList.catch.error")
+                    SU.log.e("=====getDynamicList.catch.error======")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("getDynamicList.catch.error")
                     fail("getDynamicList:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("getDynamicList.http.error")
+            SU.log.e(error)
+            SU.log.e("getDynamicList.http.error")
             fail("getDynamicList.fail:\(error)")
         }
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUtils
 
 @main
 struct bili_macApp: App {
@@ -16,6 +17,10 @@ struct bili_macApp: App {
         WindowGroup {
             ContentView()
         }
+    }
+
+    init() {
+        SU.configureLogger(label: "github.zhihaofans.bili-mac")
     }
 }
 

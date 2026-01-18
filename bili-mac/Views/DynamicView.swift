@@ -273,7 +273,7 @@ struct DynamicVideoItemView: View {
                 VideoCoverView(item: item)
             }
         }.onAppear {
-            print("jsonData")
+            SU.log.i("jsonData")
             print(item.modules.dynamic.major?.live_rcmd?.content)
         }
     }

@@ -27,24 +27,23 @@ class VideoService {
                 fail("result.isEmpty")
             } else {
                 do {
-                    print(result)
                     let data = try JSONDecoder().decode(BiliVideoInfoResult.self, from: result.data(using: .utf8)!)
-                    print("getHomePage")
-                    debugPrint(data.code)
+                    SU.log.i("getHomePage")
+                    SU.log.info(data.code)
                     if data.code == 0, data.data != nil {
                         callback(data.data!)
                     } else {
                         fail("Code \(data.code): \(data.message)")
                     }
                 } catch {
-                    print(error)
-                    print("getVideoDetail.catch.error")
+                    SU.log.e(error.localizedDescription)
+                    SU.log.e("getVideoDetail.catch.error")
                     fail("getVideoDetail:\(error)")
                 }
             }
         } fail: { error in
-            print(error)
-            print("getVideoDetail.http.error")
+            SU.log.e(error)
+            SU.log.e("getVideoDetail.http.error")
             fail("getVideoDetail:\(error)")
         }
     }
