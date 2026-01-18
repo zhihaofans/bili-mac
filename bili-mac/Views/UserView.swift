@@ -52,8 +52,8 @@ struct UserView: View {
                             if video.bvid.isEmpty {
                                 VideoCard(video: video)
                                     .onTapGesture {
-                                        print("=============================")
-                                        print("History.unsupported type tapped:")
+                                        SU.log.i("=============================")
+                                        SU.log.i("History.unsupported type tapped:")
                                         print(video)
                                     }
                                     .contextMenu {
@@ -321,7 +321,7 @@ struct UserProfileHeaderView: View {
                 }
             } fail: { errStr in
                 userName = errStr
-                print(errStr)
+                SU.log.e(errStr)
             }
         }
     }

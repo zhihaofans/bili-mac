@@ -18,36 +18,6 @@
             endingLineNumber = "102"
             landmarkName = "getList(callback:fail:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "EC12BF6E-7F89-4987-8830-7F85B64CF6FF - 1b814eb8abf3d727"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.String) -&gt; () in bili_mac.HistoryService.getList(callback: (bili_mac.HistoryListData) -&gt; (), fail: (Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "bili-mac.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zzh/Xcode/bili-mac/bili-mac/Services/HistoryService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "102"
-                  endingLineNumber = "102">
-               </Location>
-               <Location
-                  uuid = "EC12BF6E-7F89-4987-8830-7F85B64CF6FF - 1b814eb8abf3d727"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.String) -&gt; () in bili_mac.HistoryService.getList(callback: (bili_mac.HistoryListData) -&gt; (), fail: (Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "bili-mac.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zzh/Xcode/bili-mac/bili-mac/Services/HistoryService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "102"
-                  endingLineNumber = "102">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
