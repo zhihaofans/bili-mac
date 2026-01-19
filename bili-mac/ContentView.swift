@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedSidebar: SidebarItem? = .dynamic
+    @State private var selectedSidebar: SidebarItem? = .home
     var body: some View {
         NavigationSplitView {
             SidebarView(selected: $selectedSidebar)
